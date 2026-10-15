@@ -12,18 +12,18 @@ class CopyDetectionEngine:
 
     # Baseline reference statistics estimated from genuine laser/inkjet originals
     GENUINE_BASELINE = {
-        "noise_variance": 4.5,
-        "dct_hf_energy_ratio": 0.085,
-        "glcm_contrast": 0.45,
-        "glcm_homogeneity": 0.92,
-        "glcm_energy": 0.35
+        "noise_variance": 1.0,
+        "dct_hf_energy_ratio": 0.0005,
+        "glcm_contrast": 0.10,
+        "glcm_homogeneity": 0.98,
+        "glcm_energy": 0.96
     }
 
     # Standard deviations for normalization
     FEATURE_STD = {
-        "noise_variance": 2.0,
-        "dct_hf_energy_ratio": 0.035,
-        "glcm_contrast": 0.20,
+        "noise_variance": 6.0,
+        "dct_hf_energy_ratio": 0.0010,
+        "glcm_contrast": 0.30,
         "glcm_homogeneity": 0.05,
         "glcm_energy": 0.12
     }

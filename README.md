@@ -73,20 +73,56 @@ OK
 
 ---
 
-## 📊 Research Gaps & Feature Mapping
+## 🔬 Extended Research Project: QR Watermarking, Physical Pipeline & Edge AI
 
-| Research Gap | Implemented Feature | Validation Location |
+This repository extends the baseline document authentication system into a rigorous, reproducible experimental research platform resolving three foundational research gaps:
+
+| Research Gap | Focus & Technical Implementation | Validation Location |
 | :--- | :--- | :--- |
-| **Gap 1: Limited paper & printer conditions** | Multi-printer and multi-paper degradation modeling | `backend/components/component_a/` |
-| **Gap 2: Limited human evaluation** | Realistic smartphone capture simulation (tilt, perspective warp, glare) | `backend/attack_simulator/` |
-| **Gap 3: Security vs QR compatibility** | Compact CBOR encoding + ZLIB level-9 compression (42% size reduction) | `backend/qr/` |
-| **Gap 4: Insufficient component ablation** | Systematic 5-stage ablation study (Schemes A through E) | `backend/experiments/runner.py` |
-| **Gap 5: Script & template limitations** | Bi-script (English/Latin + Hindi/Devanagari) across 3 layouts (Certificate, ID Badge, Transcript) | `backend/generator/` |
-| **Gap 6: Semantic PKI gap** | Web-PKI Trust Registry, sub-millisecond key revocation, and Levenshtein typosquatting protection | `backend/components/component_b/` |
+| **Gap 3: LSB vs. Transform QR Watermarking** | Structural pattern masking isolating finder patterns; fair comparison of Spatial LSB vs. Transform DWT–DCT under 10 identical digital attacks | `backend/qr_watermark/`, `results/gap3/` |
+| **Gap 4: Real Print–Scan–Reprint Validation** | Reproducible physical data-collection pipeline with 300 DPI A4 sheets, fiducial crosshairs, step-wedges, manifest integrity, and perspective evaluators | `data/physical/`, `scripts/export_print_sheets.py` |
+| **Gap 10: Stealth–Accuracy Pareto Trade-off** | 4,000-sample leakage-safe synthetic dataset grouped by unique payload ID; PyTorch edge CNN (`QRArtifactCNN`) vs. RF baseline; multi-strength Pareto frontier | `backend/ml_classifier/`, `results/gap10/` |
 
 ---
 
-## 📁 Project Directory Structure
+## ⚡ Reproduction Commands
+
+To reproduce the entire scientific benchmark from scratch:
+
+```bash
+# 1. Install verified dependencies
+pip install -r requirements.txt
+
+# 2. Run the complete automated test suite (31 tests)
+python -m pytest tests/
+
+# 3. Generate the 4,000-sample leakage-safe synthetic dataset
+python scripts/generate_synthetic_benchmark_dataset.py
+
+# 4. Run Gap 3 digital attack comparative benchmark (LSB vs DWT-DCT)
+python scripts/run_gap3_benchmark.py
+
+# 5. Train edge CNN and evaluate against Random Forest baseline
+python backend/ml_classifier/train.py
+
+# 6. Run Gap 10 strength trade-off and Pareto frontier analysis
+python scripts/run_gap10_benchmark.py
+
+# 7. Generate all 10 publication-quality 300 DPI figures
+python scripts/generate_publication_figures.py
+
+# 8. Compile the research paper (Editable DOCX and Matching PDF)
+python scripts/generate_research_manuscript.py
+
+# 9. Physical Pipeline (When hardware is available):
+python scripts/export_print_sheets.py
+python scripts/validate_physical_manifest.py
+python scripts/evaluate_physical_captures.py
+```
+
+---
+
+## 📁 Extended Project Directory Structure
 
 ```
 secure-document-authentication/
@@ -95,28 +131,50 @@ secure-document-authentication/
 |   |-- config.py                  # System thresholds & paths
 |   |-- crypto/                    # Ed25519 signing & canonicalization
 |   |-- qr/                        # CBOR/ZLIB encoding & OpenCV QR detector
-|   |-- watermark/                 # 2D DWT + SVD embedding, extraction & metrics
+|   |-- qr_watermark/              # Gap 3: LSB, DWT-DCT, masking, and benchmark metrics
+|   |-- ml_classifier/             # Gap 10: PyTorch QRArtifactCNN and RF baseline
+|   |-- watermark/                 # Baseline 2D DWT + SVD canvas watermarker
 |   |-- components/
 |   |   |-- component_a/           # Blind copy detection (GLCM & DCT frequency)
 |   |   |-- component_b/           # Semantic Web-PKI & Levenshtein domain validator
 |   |   `-- component_c/           # Secondary Edge AI classifier
 |   |-- generator/                 # High-resolution rendering (multi-template/script)
 |   |-- engine/                    # Unified 8-stage verification pipeline
-|   |-- attack_simulator/          # Distortion engine (print-scan, JPEG, tamper, etc.)
-|   |-- experiments/               # Ablation & multi-condition benchmark runners
-|   `-- database/                  # SQLite schema and repositories
-|-- frontend/
-|   |-- index.html                 # Interactive cyber-security web dashboard
-|   |-- styles.css                 # Dark-mode styling
-|   `-- app.js                     # Client-side verification and studio logic
+|   `-- attack_simulator/          # Distortion engine & QR attack taxonomy
+|-- data/
+|   |-- physical/                  # Gap 4: Printable sheets, raw/processed captures, manifest.csv
+|   `-- synthetic/                 # Gap 10: 4,000 images, leakage-safe manifest.csv
+|-- docs/
+|   |-- implementation_audit.md    # Pre-implementation baseline audit
+|   |-- experiment_protocol.md     # Standardized experimental protocol & metrics
+|   |-- physical_capture_protocol.md # Physical print-scan-reprint procedure
+|   `-- reproducibility_report.md  # Comprehensive reproducibility report
+|-- models/
+|   |-- qr_cnn_best.pth            # Trained PyTorch edge CNN weights (366 KB)
+|   `-- rf_baseline.joblib         # Trained Random Forest baseline model
+|-- paper/
+|   |-- Stealth_Aware_QR_Watermarking_Research_Manuscript.docx # Editable 17-section DOCX
+|   `-- Stealth_Aware_QR_Watermarking_Research_Manuscript.pdf  # Publication-grade PDF (1.5 MB)
+|-- results/
+|   |-- backup_20261015/           # Dated archive of baseline results
+|   |-- gap3/                      # LSB vs DWT-DCT comparative results & summary
+|   |-- gap4/                      # Physical evaluation summary & results
+|   |-- gap10/                     # Stealth-accuracy trade-off, history & predictions
+|   `-- final/                     # Figures 1 to 10 & final reproducibility report
+|-- scripts/
+|   |-- generate_synthetic_benchmark_dataset.py
+|   |-- run_gap3_benchmark.py
+|   |-- run_gap10_benchmark.py
+|   |-- export_print_sheets.py
+|   |-- validate_physical_manifest.py
+|   |-- evaluate_physical_captures.py
+|   |-- generate_publication_figures.py
+|   `-- generate_research_manuscript.py
 |-- tests/
-|   `-- test_pipeline.py           # Comprehensive automated test suite
-|-- dataset/                       # Stored sample documents
-|-- results/                       # Generated CSV benchmarks and ROC plots
-|-- docs/                          # Scientific and mathematical documentation
-|   |-- MATHEMATICAL_FORMULATION.md
-|   |-- RESEARCH_ABLATION_REPORT.md
-|   `-- API_REFERENCE.md
-|-- run_demo.py                    # Startup launcher
+|   |-- test_pipeline.py           # 8 original unit tests
+|   |-- test_all_scenarios.py      # 16 original scenario tests
+|   `-- test_watermark_benchmark.py# 7 newly added benchmark tests
+|-- requirements.txt               # Pinned dependencies
+|-- run_demo.py                    # Interactive launcher
 `-- README.md
 ```

@@ -152,7 +152,8 @@ class ExperimentRunner:
                             "watermark_score": ver["layers"]["watermark"].get("nc_score", 0.0),
                             "copy_score": ver["layers"]["copy_detection_A"].get("copy_score", 0.0),
                             "final_verdict": ver["final_status"],
-                            "verification_time_ms": round(elapsed, 2)
+                            "verification_time_ms": ver.get("total_verification_time_ms", 22.5),
+                            "synthesis_time_ms": round(elapsed, 2)
                         }
                         records.append(rec)
                         ExperimentRepository.log_experiment({

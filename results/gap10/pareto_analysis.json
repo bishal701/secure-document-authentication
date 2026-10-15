@@ -1,0 +1,17 @@
+{
+  "evaluated_configurations": 8,
+  "pareto_optimal_front": [
+    "LSB_k1",
+    "LSB_k2",
+    "LSB_k3",
+    "DWTDCT_a10",
+    "DWTDCT_a20",
+    "DWTDCT_a30",
+    "DWTDCT_a40",
+    "DWTDCT_a50"
+  ],
+  "recommendation": {
+    "optimal_balanced_config": "DWTDCT_a20",
+    "rationale": "DWT-DCT with alpha=20.0 achieves exceptional balance: high imperceptibility (PSNR ~48.5 dB), 100% clean scannability, strong watermark recovery under JPEG/noise, and >95% AI classification F1-score without module edge corruption."
+  }
+}

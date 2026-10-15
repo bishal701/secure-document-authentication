@@ -96,7 +96,7 @@ function initDocumentStudio() {
   // Transfer actions
   document.getElementById('btn-send-to-verify').addEventListener('click', () => {
     if (!currentDocBase64) return;
-    setVerificationImage(currentDocBase64, `certificate_${currentDocId.slice(0, 8)}.png`);
+    setVerificationImage(currentDocBase64, `certificate_${currentDocId.slice(0, 8)}.png`, currentDocId);
     document.querySelector('.tab-btn[data-tab="verify"]').click();
   });
 
@@ -110,6 +110,7 @@ function initDocumentStudio() {
 // TAB 2: VERIFICATION CENTER
 // ============================================================================
 let verifyImageBase64 = null;
+let verifyDocIdHint = null;
 
 function initVerificationCenter() {
   const fileInput = document.getElementById('file-input');
@@ -120,13 +121,14 @@ function initVerificationCenter() {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (evt) => setVerificationImage(evt.target.result, file.name);
+      reader.onload = (evt) => setVerificationImage(evt.target.result, file.name, null);
       reader.readAsDataURL(file);
     }
   });
 
   document.getElementById('btn-clear-verify').addEventListener('click', () => {
     verifyImageBase64 = null;
+    verifyDocIdHint = null;
     document.getElementById('verify-preview-wrap').style.display = 'none';
     document.getElementById('drop-zone').style.display = 'block';
   });
@@ -134,12 +136,12 @@ function initVerificationCenter() {
   // Sample buttons
   document.getElementById('btn-load-genuine').addEventListener('click', () => {
     if (currentDocBase64) {
-      setVerificationImage(currentDocBase64, 'genuine_original.png');
+      setVerificationImage(currentDocBase64, 'genuine_original.png', currentDocId);
     } else {
       // Auto-generate quick certificate
       document.getElementById('btn-generate').click();
       setTimeout(() => {
-        if (currentDocBase64) setVerificationImage(currentDocBase64, 'genuine_original.png');
+        if (currentDocBase64) setVerificationImage(currentDocBase64, 'genuine_original.png', currentDocId);
       }, 1200);
     }
   });
@@ -155,7 +157,7 @@ function initVerificationCenter() {
       body: JSON.stringify({ image_base64: currentDocBase64, attack_type: 'PRINT_SCAN' })
     });
     const data = await res.json();
-    setVerificationImage(data.attacked_image_base64, 'reprinted_photocopy.png');
+    setVerificationImage(data.attacked_image_base64, 'reprinted_photocopy.png', currentDocId);
   });
 
   document.getElementById('btn-load-tamper').addEventListener('click', async () => {
@@ -169,7 +171,7 @@ function initVerificationCenter() {
       body: JSON.stringify({ image_base64: currentDocBase64, attack_type: 'TAMPER' })
     });
     const data = await res.json();
-    setVerificationImage(data.attacked_image_base64, 'tampered_document.png');
+    setVerificationImage(data.attacked_image_base64, 'tampered_document.png', currentDocId);
   });
 
   btnRun.addEventListener('click', async () => {
@@ -187,7 +189,7 @@ function initVerificationCenter() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           image_base64: verifyImageBase64,
-          doc_id_hint: currentDocId
+          doc_id_hint: verifyDocIdHint
         })
       });
 
@@ -213,8 +215,9 @@ function initVerificationCenter() {
   });
 }
 
-function setVerificationImage(base64Str, filename) {
+function setVerificationImage(base64Str, filename, docIdHint = null) {
   verifyImageBase64 = base64Str;
+  verifyDocIdHint = docIdHint;
   document.getElementById('verify-preview-img').src = base64Str;
   document.getElementById('verify-file-name').textContent = filename;
   document.getElementById('verify-preview-wrap').style.display = 'flex';
@@ -246,36 +249,46 @@ function renderVerificationResults(res) {
   latencyLabel.textContent = `⚡ Total Pipeline Verification Latency: ${res.total_verification_time_ms} ms`;
 
   // Layer 1: QR Code
-  const qr = res.layers.qr;
-  updateLayerCard('qr', qr.status, qr.status === 'PASS' ? `Decoded payload for Doc ID ${res.document_id.slice(0, 8)}... (${qr.latency_ms}ms)` : qr.reason);
+  const qr = res.layers?.qr || { status: 'FAIL', reason: 'No QR code detected' };
+  updateLayerCard('qr', qr.status, qr.status === 'PASS' ? `Decoded payload for Doc ID ${res.document_id ? res.document_id.slice(0, 8) : 'Unknown'}... (${qr.latency_ms || 0}ms)` : (qr.reason || 'QR detection failed'));
 
   // Layer 2: PKI Domain
-  const pki = res.layers.pki;
+  const pki = res.layers?.pki || { status: 'SKIPPED', reason: 'Awaiting valid QR payload' };
   updateLayerCard('pki', pki.status, pki.status === 'PASS' ? `Issuer '${pki.domain}' is enrolled and ACTIVE in Trust Registry.` : (pki.reason || 'Untrusted domain'));
 
   // Layer 3: Signature
-  const sig = res.layers.signature;
-  updateLayerCard('sig', sig.status, sig.reason || `Ed25519 signature valid (${sig.latency_ms}ms)`);
+  const sig = res.layers?.signature || { status: 'SKIPPED', reason: 'Awaiting valid QR payload' };
+  updateLayerCard('sig', sig.status, sig.reason || (sig.status === 'PASS' ? `Ed25519 signature valid (${sig.latency_ms}ms)` : 'Signature check skipped'));
 
   // Layer 4: Hash
-  const hash = res.layers.hash_integrity;
-  updateLayerCard('hash', hash.status, hash.reason);
+  const hash = res.layers?.hash_integrity || res.layers?.hash || { status: 'SKIPPED', reason: 'Awaiting valid QR payload' };
+  updateLayerCard('hash', hash.status, hash.reason || 'Integrity check skipped');
 
   // Layer 5: Watermark
-  const wm = res.layers.watermark;
-  updateLayerCard('wm', wm.status, wm.status !== 'SKIPPED' ? `Normalized Correlation: ${wm.nc_score} (BER: ${wm.ber_percent}%)` : wm.reason);
+  const wm = res.layers?.watermark || { status: 'SKIPPED', reason: 'Awaiting document identity' };
+  updateLayerCard('wm', wm.status, wm.status !== 'SKIPPED' ? `Normalized Correlation: ${wm.nc_score} (BER: ${wm.ber_percent}%)` : (wm.reason || 'Watermark check skipped'));
 
   // Layer 6: Copy Detection A
-  const copy = res.layers.copy_detection_A;
-  updateLayerCard('copy', copy.status === 'PASS' ? 'PASS' : 'FLAG', `Copy Score: ${copy.copy_score} (Threshold: ${copy.threshold}). ${copy.verdict}`);
+  const copy = res.layers?.copy_detection_A || res.layers?.copy_detection || { status: 'SKIPPED', reason: 'Awaiting valid QR payload' };
+  if (copy.status === 'SKIPPED') {
+    updateLayerCard('copy', 'SKIPPED', copy.reason || 'Awaiting valid QR payload.');
+  } else {
+    updateLayerCard('copy', copy.status === 'PASS' ? 'PASS' : 'FLAG', `Copy Score: ${copy.copy_score} (Threshold: ${copy.threshold}). ${copy.verdict || ''}`);
+  }
 
   // Layer 7: Edge AI C
-  const ai = res.layers.edge_ai_C;
-  updateLayerCard('ai', ai.status === 'PASS' ? 'PASS' : 'FLAG', `Predicted: ${ai.predicted_class} (${(ai.confidence*100).toFixed(1)}% conf). ${ai.note}`);
+  const ai = res.layers?.edge_ai_C || res.layers?.edge_ai || { status: 'SKIPPED', reason: 'Awaiting valid QR payload' };
+  if (ai.status === 'SKIPPED') {
+    updateLayerCard('ai', 'SKIPPED', ai.reason || 'Awaiting valid QR payload.');
+  } else {
+    updateLayerCard('ai', ai.status === 'PASS' ? 'PASS' : 'FLAG', `Predicted: ${ai.predicted_class} (${((ai.confidence || 0)*100).toFixed(1)}% conf). ${ai.note || ''}`);
+  }
 
   // Layer 8: Typosquatting
   const typo = pki.typosquat_analysis;
-  if (typo && typo.is_typosquat) {
+  if (pki.status === 'SKIPPED') {
+    updateLayerCard('typo', 'SKIPPED', 'Awaiting valid QR payload.');
+  } else if (typo && typo.is_typosquat) {
     updateLayerCard('typo', 'FLAG', typo.warning);
   } else {
     updateLayerCard('typo', 'PASS', 'Domain is free of typosquatting or homoglyph spoofing.');
@@ -430,13 +443,32 @@ async function loadTrustRegistry() {
         <td><code>${iss.key_id}</code></td>
         <td><span class="badge ${isRevoked ? 'badge-fail' : 'badge-pulse'}">${iss.status}</span></td>
         <td>
-          ${isRevoked ? '<span class="text-muted">Revoked</span>' : `<button class="btn btn-small btn-warning" onclick="revokeKey('${iss.key_id}')">Revoke Key</button>`}
+          ${isRevoked ? `<button class="btn btn-small btn-primary" onclick="reactivateKey('${iss.key_id}')">Re-Activate</button>` : `<button class="btn btn-small btn-warning" onclick="revokeKey('${iss.key_id}')">Revoke Key</button>`}
         </td>
       `;
       tbody.appendChild(tr);
     });
   } catch (err) {
     console.error('Failed to load trust registry', err);
+  }
+}
+
+async function reactivateKey(keyId) {
+  try {
+    const resp = await fetch('/api/trust-registry/reactivate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key_id: keyId })
+    });
+    const data = await resp.json();
+    const latencyBox = document.getElementById('revocation-latency-box');
+    latencyBox.style.display = 'block';
+    document.getElementById('revocation-latency-text').innerHTML = `
+      Key <code>${keyId}</code> successfully <strong>re-activated</strong>. Subsequent verifications will now PASS normally.
+    `;
+    loadTrustRegistry();
+  } catch (err) {
+    alert('Reactivation failed: ' + err.message);
   }
 }
 

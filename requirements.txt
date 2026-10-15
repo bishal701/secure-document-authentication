@@ -1,0 +1,30 @@
+# Core Numerical & Image Processing
+numpy>=2.0.0
+scipy>=1.14.0
+scikit-learn>=1.5.0
+scikit-image>=0.24.0
+opencv-python>=4.10.0
+PyWavelets>=1.7.0
+pillow>=10.0.0
+
+# 2D Barcode & Serialization
+qrcode>=8.0
+cbor2>=6.0.0
+cryptography>=43.0.0
+
+# Deep Learning & AI Classifier
+torch>=2.4.0
+torchvision>=0.19.0
+joblib>=1.4.0
+
+# Visualization & Reporting
+matplotlib>=3.9.0
+pandas>=2.2.0
+reportlab>=4.0.0
+python-docx>=1.1.0
+pypdf>=5.0.0
+
+# Web Backend & Testing
+fastapi>=0.110.0
+uvicorn>=0.30.0
+pytest>=8.0.0

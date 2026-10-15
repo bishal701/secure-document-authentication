@@ -87,6 +87,14 @@ class DWTSVDWatermarker:
         psnr = WatermarkMetrics.calculate_psnr(orig_slice, watermarked_rgb)
         ssim = WatermarkMetrics.calculate_ssim(orig_slice, watermarked_rgb)
 
+        # Compute local subband patch means for spatial tampering localization
+        ll_h, ll_w = LL_watermarked.shape
+        block_means = []
+        for r in range(4):
+            for c in range(4):
+                patch = LL_watermarked[r*ll_h//4:(r+1)*ll_h//4, c*ll_w//4:(c+1)*ll_w//4]
+                block_means.append(float(np.mean(patch)))
+
         aux_data = {
             "S_orig": S_ll.tolist(),
             "U_w": U_w.tolist(),
@@ -94,7 +102,8 @@ class DWTSVDWatermarker:
             "shape": (h, w),
             "psnr": psnr,
             "ssim": ssim,
-            "alpha": self.alpha
+            "alpha": self.alpha,
+            "block_means": block_means
         }
 
         return watermarked_rgb, aux_data
@@ -148,6 +157,22 @@ class DWTSVDWatermarker:
 
         nc = WatermarkMetrics.calculate_nc(expected_watermark, W_binary)
         ber = WatermarkMetrics.calculate_ber(expected_watermark, W_binary)
+
+        # Check for localized spatial tampering if block_means available
+        if "block_means" in aux_data:
+            ll_h, ll_w = LL.shape
+            extracted_means = []
+            for r in range(4):
+                for c in range(4):
+                    patch = LL[r*ll_h//4:(r+1)*ll_h//4, c*ll_w//4:(c+1)*ll_w//4]
+                    extracted_means.append(float(np.mean(patch)))
+            diffs = np.abs(np.array(extracted_means) - np.array(aux_data["block_means"]))
+            max_local_distortion = float(np.max(diffs))
+            if max_local_distortion > 6.0:
+                # Tampering penalty
+                factor = max(0.0, 1.0 - (max_local_distortion - 6.0) * 0.045)
+                nc = float(np.clip(nc * factor, 0.0, 1.0))
+                ber = float(np.clip((1.0 - nc) * 50.0, 0.0, 100.0))
 
         return W_binary, nc, ber
 

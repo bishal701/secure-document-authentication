@@ -1,0 +1,55 @@
+script,template,printer,paper,qr_valid,watermark_score,copy_score,final_verdict,verification_time_ms,synthesis_time_ms
+latin,certificate,LaserJet Enterprise,Bond 80gsm,1,0.7735,0.5361,SUSPICIOUS,1424.65,3819.56
+latin,certificate,LaserJet Enterprise,Glossy Photo 180gsm,1,0.7605,0.514,SUSPICIOUS,1055.46,3002.35
+latin,certificate,LaserJet Enterprise,Parchment Document,1,0.7761,0.5365,SUSPICIOUS,4115.51,5996.18
+latin,certificate,DeskJet Inkjet,Bond 80gsm,1,0.7596,0.5365,SUSPICIOUS,1822.65,5610.9
+latin,certificate,DeskJet Inkjet,Glossy Photo 180gsm,1,0.7717,0.5065,SUSPICIOUS,3048.48,8508.8
+latin,certificate,DeskJet Inkjet,Parchment Document,1,0.7591,0.4678,SUSPICIOUS,3082.28,8859.45
+latin,certificate,Thermal Pro,Bond 80gsm,1,0.7607,0.5377,SUSPICIOUS,2120.69,7842.84
+latin,certificate,Thermal Pro,Glossy Photo 180gsm,1,0.7719,0.4945,SUSPICIOUS,2746.62,7223.9
+latin,certificate,Thermal Pro,Parchment Document,1,0.7723,0.5207,SUSPICIOUS,3657.31,9125.24
+latin,id_card,LaserJet Enterprise,Bond 80gsm,1,0.7545,0.8523,SUSPICIOUS,1607.1,4123.61
+latin,id_card,LaserJet Enterprise,Glossy Photo 180gsm,1,0.7553,0.8479,SUSPICIOUS,1564.05,5263.82
+latin,id_card,LaserJet Enterprise,Parchment Document,1,0.7563,0.8514,SUSPICIOUS,1766.48,5213.91
+latin,id_card,DeskJet Inkjet,Bond 80gsm,1,0.7654,0.8507,SUSPICIOUS,1247.97,4121.35
+latin,id_card,DeskJet Inkjet,Glossy Photo 180gsm,1,0.7655,0.8517,SUSPICIOUS,1025.66,3208.61
+latin,id_card,DeskJet Inkjet,Parchment Document,1,0.7613,0.8474,SUSPICIOUS,2198.22,4922.63
+latin,id_card,Thermal Pro,Bond 80gsm,1,0.7531,0.8522,SUSPICIOUS,1161.73,3192.42
+latin,id_card,Thermal Pro,Glossy Photo 180gsm,1,0.7705,0.8509,SUSPICIOUS,1102.18,4085.44
+latin,id_card,Thermal Pro,Parchment Document,1,0.7587,0.8497,SUSPICIOUS,1369.52,3470.62
+latin,transcript,LaserJet Enterprise,Bond 80gsm,1,0.721,0.2439,VERIFIED,7311.28,12850.43
+latin,transcript,LaserJet Enterprise,Glossy Photo 180gsm,1,0.7209,0.2405,VERIFIED,4523.13,13577.54
+latin,transcript,LaserJet Enterprise,Parchment Document,1,0.7142,0.2441,VERIFIED,3022.51,10412.9
+latin,transcript,DeskJet Inkjet,Bond 80gsm,1,0.716,0.2271,VERIFIED,1305.52,9104.19
+latin,transcript,DeskJet Inkjet,Glossy Photo 180gsm,1,0.7244,0.2289,VERIFIED,4821.11,11904.05
+latin,transcript,DeskJet Inkjet,Parchment Document,1,0.7303,0.225,VERIFIED,5481.2,13235.94
+latin,transcript,Thermal Pro,Bond 80gsm,1,0.7199,0.2236,VERIFIED,5087.83,14833.66
+latin,transcript,Thermal Pro,Glossy Photo 180gsm,1,0.7099,0.2333,VERIFIED,3157.17,10410.93
+latin,transcript,Thermal Pro,Parchment Document,1,0.7194,0.2101,VERIFIED,3211.71,9699.68
+devanagari,certificate,LaserJet Enterprise,Bond 80gsm,1,0.753,0.5076,SUSPICIOUS,3250.97,9769.03
+devanagari,certificate,LaserJet Enterprise,Glossy Photo 180gsm,1,0.7469,0.4856,SUSPICIOUS,2745.86,9030.81
+devanagari,certificate,LaserJet Enterprise,Parchment Document,1,0.7557,0.5054,SUSPICIOUS,3142.78,8374.42
+devanagari,certificate,DeskJet Inkjet,Bond 80gsm,1,0.7579,0.5466,SUSPICIOUS,3226.61,8247.61
+devanagari,certificate,DeskJet Inkjet,Glossy Photo 180gsm,1,0.7614,0.5553,SUSPICIOUS,3270.25,8950.65
+devanagari,certificate,DeskJet Inkjet,Parchment Document,1,0.7555,0.535,SUSPICIOUS,4025.74,9202.47
+devanagari,certificate,Thermal Pro,Bond 80gsm,1,0.7488,0.5691,SUSPICIOUS,3527.55,10522.57
+devanagari,certificate,Thermal Pro,Glossy Photo 180gsm,1,0.7569,0.5405,SUSPICIOUS,2910.5,7245.15
+devanagari,certificate,Thermal Pro,Parchment Document,1,0.753,0.5187,SUSPICIOUS,2370.35,6914.47
+devanagari,id_card,LaserJet Enterprise,Bond 80gsm,1,0.7502,0.8512,SUSPICIOUS,1489.73,3403.7
+devanagari,id_card,LaserJet Enterprise,Glossy Photo 180gsm,1,0.7537,0.8528,SUSPICIOUS,1591.9,4202.69
+devanagari,id_card,LaserJet Enterprise,Parchment Document,1,0.7475,0.8523,SUSPICIOUS,1003.05,2986.42
+devanagari,id_card,DeskJet Inkjet,Bond 80gsm,1,0.755,0.8509,SUSPICIOUS,2437.82,4540.67
+devanagari,id_card,DeskJet Inkjet,Glossy Photo 180gsm,1,0.7423,0.8528,SUSPICIOUS,2193.48,4748.88
+devanagari,id_card,DeskJet Inkjet,Parchment Document,1,0.7492,0.8497,SUSPICIOUS,1292.66,3178.56
+devanagari,id_card,Thermal Pro,Bond 80gsm,1,0.7578,0.8524,SUSPICIOUS,905.85,3249.44
+devanagari,id_card,Thermal Pro,Glossy Photo 180gsm,1,0.7538,0.8524,SUSPICIOUS,912.03,2368.38
+devanagari,id_card,Thermal Pro,Parchment Document,1,0.7377,0.8527,SUSPICIOUS,950.46,2531.95
+devanagari,transcript,LaserJet Enterprise,Bond 80gsm,1,0.7184,0.2292,VERIFIED,2945.27,8212.35
+devanagari,transcript,LaserJet Enterprise,Glossy Photo 180gsm,1,0.7057,0.2163,VERIFIED,2743.32,7417.49
+devanagari,transcript,LaserJet Enterprise,Parchment Document,1,0.7045,0.2419,VERIFIED,6607.88,13657.37
+devanagari,transcript,DeskJet Inkjet,Bond 80gsm,1,0.7105,0.2365,VERIFIED,4260.82,11391.32
+devanagari,transcript,DeskJet Inkjet,Glossy Photo 180gsm,1,0.7161,0.2421,VERIFIED,4166.32,12044.15
+devanagari,transcript,DeskJet Inkjet,Parchment Document,1,0.7196,0.238,VERIFIED,4831.53,11220.61
+devanagari,transcript,Thermal Pro,Bond 80gsm,1,0.7152,0.2248,VERIFIED,3496.21,9553.67
+devanagari,transcript,Thermal Pro,Glossy Photo 180gsm,1,0.7144,0.2214,VERIFIED,3784.61,10607.19
+devanagari,transcript,Thermal Pro,Parchment Document,1,0.72,0.2344,VERIFIED,4126.85,10463.31

@@ -80,10 +80,10 @@ class UnifiedVerificationEngine:
                     "qr": {"status": "FAIL", "latency_ms": t_qr, "reason": "No valid secure QR code detected on document."},
                     "pki": {"status": "SKIPPED", "reason": "Awaiting valid QR payload."},
                     "signature": {"status": "SKIPPED", "reason": "Awaiting valid QR payload."},
-                    "hash": {"status": "SKIPPED", "reason": "Awaiting valid QR payload."},
+                    "hash_integrity": {"status": "SKIPPED", "reason": "Awaiting valid QR payload."},
                     "watermark": {"status": "SKIPPED", "reason": "Awaiting document identity."},
-                    "copy_detection": {"status": "SKIPPED"},
-                    "edge_ai": {"status": "SKIPPED"}
+                    "copy_detection_A": {"status": "SKIPPED", "reason": "Awaiting valid QR payload."},
+                    "edge_ai_C": {"status": "SKIPPED", "reason": "Awaiting valid QR payload."}
                 }
             }
             VerificationLogRepository.log_verification({
@@ -218,9 +218,11 @@ class UnifiedVerificationEngine:
             summary = "Document hash integrity FAILED: Canonical data does not match issued record."
         
         # Suspicious conditions: Valid crypto, but physical or semantic red flags
-        elif copy_is_copy or pki_result.get("typosquat_analysis", {}).get("is_typosquat") or (ai_class == "TAMPERED" and ai_conf >= AI_TAMPER_CONFIDENCE_MIN):
+        elif copy_is_copy or wm_status in ["FAIL", "ERROR"] or pki_result.get("typosquat_analysis", {}).get("is_typosquat") or (ai_class == "TAMPERED" and ai_conf >= AI_TAMPER_CONFIDENCE_MIN):
             final_status = "SUSPICIOUS"
             reasons = []
+            if wm_status in ["FAIL", "ERROR"]:
+                reasons.append(f"DWT-SVD invisible watermark destroyed/tampered (NC={wm_score:.3f} < {WATERMARK_NC_THRESHOLD}).")
             if copy_is_copy:
                 reasons.append(f"Component A detected second-generation photocopy/reprint (score={copy_score:.3f}).")
             if pki_result.get("typosquat_analysis", {}).get("is_typosquat"):
@@ -233,6 +235,7 @@ class UnifiedVerificationEngine:
         elif wm_status == "WARN" or copy_analysis["verdict"] == "BORDERLINE_ACCEPTABLE":
             final_status = "VERIFIED-WITH-WARNING"
             summary = f"Document is authentic, but exhibits physical degradation (Watermark NC={wm_score:.3f}, Copy Score={copy_score:.3f})."
+
 
         # Complete genuine pass
         else:

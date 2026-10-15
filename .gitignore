@@ -11,16 +11,25 @@ env/
 .env
 .env.*
 
-# Database
+# Database (Large SQLite DBs)
 documents.db
 *.db
 *.sqlite
 *.sqlite3
 
-# Generated results
-results/
+# Uploads & Temporary Outputs
 uploads/
 outputs/
+scratch/
+
+# Large Synthetic Dataset Images (regenerated via scripts/generate_synthetic_benchmark_dataset.py)
+data/synthetic/images/
+
+# Local Benchmark Backups
+results/backup_*/
+
+# Generated Demo/Test Documents
+dataset/*.png
 
 # IDE
 .vscode/

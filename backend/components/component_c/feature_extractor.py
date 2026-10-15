@@ -2,6 +2,15 @@ import numpy as np
 import cv2
 from typing import Dict, Any, List
 
+# Precomputed constants for edge inference
+_CENTER_Y, _CENTER_X = 128, 128
+_Y_GRID, _X_GRID = np.ogrid[:256, :256]
+_R_GRID = np.sqrt((_X_GRID - _CENTER_X)**2 + (_Y_GRID - _CENTER_Y)**2)
+_RADIAL_MASKS = [
+    ((_R_GRID >= r_min) & (_R_GRID < r_max))
+    for r_min, r_max in [(0, 32), (32, 64), (64, 96), (96, 128)]
+]
+
 class EdgeAIFeatureExtractor:
     """
     Extracts multi-scale spatial and frequency embeddings for document classification.
@@ -25,9 +34,9 @@ class EdgeAIFeatureExtractor:
             features.append(float(np.std(img_std[:, :, ch])) / 128.0)
 
         # 2. Gradient magnitude & edge distribution (Sobel) -> 8 dims
-        sobel_x = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=3)
-        sobel_y = cv2.Sobel(gray, cv2.CV_64F, 0, 1, ksize=3)
-        grad_mag = np.sqrt(sobel_x**2 + sobel_y**2)
+        sobel_x = cv2.Sobel(gray, cv2.CV_32F, 1, 0, ksize=3)
+        sobel_y = cv2.Sobel(gray, cv2.CV_32F, 0, 1, ksize=3)
+        grad_mag = cv2.magnitude(sobel_x, sobel_y)
 
         features.append(float(np.mean(grad_mag)) / 100.0)
         features.append(float(np.std(grad_mag)) / 100.0)
@@ -39,12 +48,11 @@ class EdgeAIFeatureExtractor:
         features.extend([float(x) for x in hist_angles])
 
         # 3. Laplacian variance (blur / sharpness indicator) -> 2 dims
-        lap = cv2.Laplacian(gray, cv2.CV_64F)
+        lap = cv2.Laplacian(gray, cv2.CV_32F)
         features.append(float(np.var(lap)) / 500.0)
         features.append(float(np.mean(np.abs(lap))) / 50.0)
 
         # 4. Multi-quadrant patch symmetry & splicing discrepancy (4 quadrants) -> 12 dims
-        # Tampered documents typically show local variance discrepancies across quadrants
         h_half, w_half = 128, 128
         quads = [
             gray[0:h_half, 0:w_half],
@@ -62,17 +70,11 @@ class EdgeAIFeatureExtractor:
         f_transform = np.fft.fft2(gray)
         f_shift = np.fft.fftshift(f_transform)
         magnitude_spectrum = 20 * np.log(np.abs(f_shift) + 1e-6)
-        
-        # Radial slices (low, mid-low, mid-high, high frequencies)
-        center_y, center_x = 128, 128
-        y, x = np.ogrid[:256, :256]
-        r = np.sqrt((x - center_x)**2 + (y - center_y)**2)
-        
-        for r_min, r_max in [(0, 32), (32, 64), (64, 96), (96, 128)]:
-            mask = (r >= r_min) & (r < r_max)
-            val = float(np.mean(magnitude_spectrum[mask])) / 200.0
-            features.append(val)
-            features.append(float(np.std(magnitude_spectrum[mask])) / 50.0)
+
+        for mask in _RADIAL_MASKS:
+            m_vals = magnitude_spectrum[mask]
+            features.append(float(np.mean(m_vals)) / 200.0)
+            features.append(float(np.std(m_vals)) / 50.0)
 
         # 6. High-pass noise residual Kurtosis and Skewness -> 4 dims
         denoised = cv2.medianBlur(gray, 3)

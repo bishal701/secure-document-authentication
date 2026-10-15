@@ -23,10 +23,19 @@ from backend.experiments.runner import ExperimentRunner
 from backend.experiments.metrics_exporter import MetricsExporter
 from backend.experiments.human_eval import HumanEvaluationSuite
 
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    TrustRegistryService.seed_default_issuers()
+    yield
+
 app = FastAPI(
     title="Secure Document Authentication API",
     version="2.0.0",
-    description="Research Prototype: Hybrid QR + DWT-SVD Watermarking + Blind Copy Detection + Web-PKI + Edge AI"
+    description="Research Prototype: Hybrid QR + DWT-SVD Watermarking + Blind Copy Detection + Web-PKI + Edge AI",
+    lifespan=lifespan
 )
 
 app.add_middleware(
@@ -36,12 +45,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Initialize Database and default issuers upon startup
-@app.on_event("startup")
-def startup_event():
-    init_db()
-    TrustRegistryService.seed_default_issuers()
 
 class GenerateDocRequest(BaseModel):
     recipient_name: str = "Bishal Paul"
@@ -225,6 +228,12 @@ def revoke_key(req: RevokeKeyRequest):
     res = TrustRegistryService.revoke_key(req.key_id)
     return res
 
+@app.post("/api/trust-registry/reactivate")
+def reactivate_key(req: RevokeKeyRequest):
+    TrustRegistryRepository.update_status(req.key_id, "ACTIVE")
+    return {"status": "SUCCESS", "message": f"Key '{req.key_id}' reactivated to ACTIVE status."}
+
+
 @app.post("/api/trust-registry/check-domain")
 def check_domain_safety(req: DomainCheckRequest):
     all_issuers = TrustRegistryRepository.list_all()
@@ -268,6 +277,13 @@ def get_verification_logs(limit: int = 20):
 # Mount static files for frontend
 if STATIC_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+@app.get("/favicon.ico")
+def serve_favicon():
+    favicon_path = STATIC_DIR / "favicon.ico"
+    if favicon_path.exists():
+        return FileResponse(str(favicon_path))
+    return JSONResponse(status_code=204, content=None)
 
 @app.get("/")
 def serve_index():

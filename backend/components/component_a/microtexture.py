@@ -13,10 +13,29 @@ class MicrotextureExtractor:
     @staticmethod
     def extract_roi(img: np.ndarray, roi_box: Tuple[float, float, float, float] = (0.1, 0.1, 0.4, 0.4)) -> np.ndarray:
         """
-        Extracts a normalized region of interest (ymin, xmin, ymax, xmax as fractions).
-        Default extracts top-left background / texture zone.
+        Extracts a normalized background texture region of interest.
+        Locates the cleanest paper substrate patch (128x128) in the upper quadrant.
         """
         h, w = img.shape[:2]
+        y_max = int(0.50 * h)
+        x_max = int(0.50 * w)
+        patch_size = 128
+
+        if y_max > patch_size and x_max > patch_size:
+            best_patch = None
+            best_mean = -1.0
+            step = 32
+            for y in range(int(0.05 * h), y_max - patch_size + 1, step):
+                for x in range(int(0.05 * w), x_max - patch_size + 1, step):
+                    patch = img[y:y+patch_size, x:x+patch_size]
+                    m = float(np.mean(patch))
+                    if m > best_mean:
+                        best_mean = m
+                        best_patch = patch
+            if best_patch is not None and best_mean > 200.0:
+                return best_patch
+
+        # Fallback to standard box
         ymin, xmin, ymax, xmax = roi_box
         y1, y2 = int(ymin * h), int(ymax * h)
         x1, x2 = int(xmin * w), int(xmax * w)

@@ -85,8 +85,8 @@ class EdgeAIDocumentClassifier:
 
         # Train fast calibrated classifier
         X, y = self._bootstrap_synthetic_dataset()
-        base_rf = RandomForestClassifier(n_estimators=40, max_depth=6, random_state=42)
-        calibrated = CalibratedClassifierCV(estimator=base_rf, method='sigmoid', cv=3)
+        base_rf = RandomForestClassifier(n_estimators=10, max_depth=4, random_state=42)
+        calibrated = CalibratedClassifierCV(estimator=base_rf, method='sigmoid', cv=2)
         calibrated.fit(X, y)
         self.model = calibrated
         joblib.dump(self.model, MODEL_PATH)

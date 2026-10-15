@@ -1,0 +1,30 @@
+{
+  "total_samples": 4000,
+  "unique_payloads": 50,
+  "splits": {
+    "train": 2400,
+    "val": 800,
+    "test": 800
+  },
+  "class_distribution": {
+    "GENUINE (0)": 400,
+    "MANIPULATED (1)": 3600
+  },
+  "methods": {
+    "DWT-DCT": 2500,
+    "LSB": 1500
+  },
+  "attacks": {
+    "CLEAN": 400,
+    "GAUSSIAN_NOISE": 400,
+    "SALT_PEPPER": 400,
+    "GAUSSIAN_BLUR": 400,
+    "JPEG_COMPRESSION": 400,
+    "RESIZE": 400,
+    "ROTATION": 400,
+    "CROP": 400,
+    "CONTRAST_ILLUMINATION": 400,
+    "WATERMARK_REMOVAL": 400
+  },
+  "generation_time_sec": 198.59
+}

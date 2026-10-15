@@ -322,6 +322,7 @@ def main():
     try:
         classifier = EdgeAIDocumentClassifier()
         dummy_patch = np.full((256, 256, 3), 230, dtype=np.uint8)
+        classifier.classify_image(dummy_patch)  # Warmup
         t_start = time.perf_counter()
         c_res = classifier.classify_image(dummy_patch)
         latency = (time.perf_counter() - t_start) * 1000.0

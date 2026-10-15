@@ -1,0 +1,8 @@
+{
+  "status": "PENDING_PHYSICAL_CAPTURES",
+  "research_gap": "Gap 4: Real Print-Scan-Reprint Validation",
+  "manifest_records_configured": 12,
+  "real_physical_captures_evaluated": 0,
+  "simulated_data_substituted": false,
+  "execution_instructions": "Print physical sheet PDF at 100% scale, scan or photograph, save to data/physical/raw/, and rerun scripts/evaluate_physical_captures.py."
+}

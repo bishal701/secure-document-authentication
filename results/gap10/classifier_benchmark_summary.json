@@ -1,0 +1,62 @@
+{
+  "dataset_split": {
+    "train_samples": 2400,
+    "val_samples": 800,
+    "test_samples": 800,
+    "train_payloads": 30,
+    "test_payloads": 10,
+    "leakage_detected": false
+  },
+  "cnn_metrics": {
+    "tp": 640,
+    "fp": 0,
+    "tn": 80,
+    "fn": 80,
+    "total_samples": 800,
+    "precision": 1.0,
+    "recall": 0.8888888888888888,
+    "attack_detection_rate": 88.88888888888889,
+    "specificity": 1.0,
+    "f1_score": 0.9411764705882353,
+    "far_percent": 11.11111111111111,
+    "frr_percent": 0.0,
+    "balanced_accuracy": 0.9444444444444444,
+    "inference_latency_ms": 17.75,
+    "model": "QRArtifactCNN"
+  },
+  "rf_baseline_metrics": {
+    "tp": 704,
+    "fp": 1,
+    "tn": 79,
+    "fn": 16,
+    "total_samples": 800,
+    "precision": 0.9985815602836879,
+    "recall": 0.9777777777777777,
+    "attack_detection_rate": 97.77777777777777,
+    "specificity": 0.9875,
+    "f1_score": 0.9880701754385965,
+    "far_percent": 2.2222222222222223,
+    "frr_percent": 1.25,
+    "balanced_accuracy": 0.9826388888888888,
+    "inference_latency_ms": 0.01,
+    "model": "BaselineRandomForest"
+  },
+  "majority_baseline_metrics": {
+    "tp": 720,
+    "fp": 80,
+    "tn": 0,
+    "fn": 0,
+    "total_samples": 800,
+    "precision": 0.9,
+    "recall": 1.0,
+    "attack_detection_rate": 100.0,
+    "specificity": 0.0,
+    "f1_score": 0.9473684210526316,
+    "far_percent": 0.0,
+    "frr_percent": 100.0,
+    "balanced_accuracy": 0.5,
+    "inference_latency_ms": 0.0,
+    "model": "MajorityClassBaseline",
+    "majority_class": 1
+  }
+}

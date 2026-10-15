@@ -1,0 +1,1 @@
+sample_id,batch_id,grid_index,payload_id,watermark_method,embedding_strength,capture_stage,printer_model,paper_type,capture_device,lighting_lux,tilt_angle_deg,raw_image_path,ground_truth_label,verification_status,qr_decoded,decoded_payload,extracted_nc,extracted_ber,glcm_homogeneity,glcm_energy,copy_score,evaluation_timestamp

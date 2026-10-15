@@ -1,0 +1,81 @@
+sample_id,scheme,attack,success_or_detection,watermark_nc,copy_score,total_latency_ms
+0,A: QR Only,NONE,1,0.9945,0.067,2602.06
+0,B: QR + Watermark,NONE,1,0.9945,0.067,2602.06
+0,C: QR + Watermark + Comp A,NONE,1,0.9945,0.067,2602.06
+0,D: QR + Watermark + A + B,NONE,1,0.9945,0.067,2602.06
+0,E: Full Integrated System (A+B+C),NONE,1,0.9945,0.067,2602.06
+0,A: QR Only,PRINT_SCAN,0,0.7731,0.5399,3281.96
+0,B: QR + Watermark,PRINT_SCAN,0,0.7731,0.5399,3281.96
+0,C: QR + Watermark + Comp A,PRINT_SCAN,1,0.7731,0.5399,3281.96
+0,D: QR + Watermark + A + B,PRINT_SCAN,1,0.7731,0.5399,3281.96
+0,E: Full Integrated System (A+B+C),PRINT_SCAN,1,0.7731,0.5399,3281.96
+0,A: QR Only,JPEG,1,0.9961,0.0675,2474.25
+0,B: QR + Watermark,JPEG,1,0.9961,0.0675,2474.25
+0,C: QR + Watermark + Comp A,JPEG,1,0.9961,0.0675,2474.25
+0,D: QR + Watermark + A + B,JPEG,1,0.9961,0.0675,2474.25
+0,E: Full Integrated System (A+B+C),JPEG,1,0.9961,0.0675,2474.25
+0,A: QR Only,TAMPER,0,0.5957,0.067,2514.05
+0,B: QR + Watermark,TAMPER,1,0.5957,0.067,2514.05
+0,C: QR + Watermark + Comp A,TAMPER,1,0.5957,0.067,2514.05
+0,D: QR + Watermark + A + B,TAMPER,1,0.5957,0.067,2514.05
+0,E: Full Integrated System (A+B+C),TAMPER,1,0.5957,0.067,2514.05
+1,A: QR Only,NONE,1,0.9942,0.0671,2667.94
+1,B: QR + Watermark,NONE,1,0.9942,0.0671,2667.94
+1,C: QR + Watermark + Comp A,NONE,1,0.9942,0.0671,2667.94
+1,D: QR + Watermark + A + B,NONE,1,0.9942,0.0671,2667.94
+1,E: Full Integrated System (A+B+C),NONE,1,0.9942,0.0671,2667.94
+1,A: QR Only,PRINT_SCAN,0,0.7693,0.5076,2035.74
+1,B: QR + Watermark,PRINT_SCAN,0,0.7693,0.5076,2035.74
+1,C: QR + Watermark + Comp A,PRINT_SCAN,1,0.7693,0.5076,2035.74
+1,D: QR + Watermark + A + B,PRINT_SCAN,1,0.7693,0.5076,2035.74
+1,E: Full Integrated System (A+B+C),PRINT_SCAN,1,0.7693,0.5076,2035.74
+1,A: QR Only,JPEG,1,0.9961,0.0675,2937.46
+1,B: QR + Watermark,JPEG,1,0.9961,0.0675,2937.46
+1,C: QR + Watermark + Comp A,JPEG,1,0.9961,0.0675,2937.46
+1,D: QR + Watermark + A + B,JPEG,1,0.9961,0.0675,2937.46
+1,E: Full Integrated System (A+B+C),JPEG,1,0.9961,0.0675,2937.46
+1,A: QR Only,TAMPER,0,0.5785,0.0671,3244.71
+1,B: QR + Watermark,TAMPER,1,0.5785,0.0671,3244.71
+1,C: QR + Watermark + Comp A,TAMPER,1,0.5785,0.0671,3244.71
+1,D: QR + Watermark + A + B,TAMPER,1,0.5785,0.0671,3244.71
+1,E: Full Integrated System (A+B+C),TAMPER,1,0.5785,0.0671,3244.71
+2,A: QR Only,NONE,1,0.9933,0.067,2682.07
+2,B: QR + Watermark,NONE,1,0.9933,0.067,2682.07
+2,C: QR + Watermark + Comp A,NONE,1,0.9933,0.067,2682.07
+2,D: QR + Watermark + A + B,NONE,1,0.9933,0.067,2682.07
+2,E: Full Integrated System (A+B+C),NONE,1,0.9933,0.067,2682.07
+2,A: QR Only,PRINT_SCAN,0,0.7595,0.5184,2512.88
+2,B: QR + Watermark,PRINT_SCAN,0,0.7595,0.5184,2512.88
+2,C: QR + Watermark + Comp A,PRINT_SCAN,1,0.7595,0.5184,2512.88
+2,D: QR + Watermark + A + B,PRINT_SCAN,1,0.7595,0.5184,2512.88
+2,E: Full Integrated System (A+B+C),PRINT_SCAN,1,0.7595,0.5184,2512.88
+2,A: QR Only,JPEG,1,0.9965,0.0675,3095.74
+2,B: QR + Watermark,JPEG,1,0.9965,0.0675,3095.74
+2,C: QR + Watermark + Comp A,JPEG,1,0.9965,0.0675,3095.74
+2,D: QR + Watermark + A + B,JPEG,1,0.9965,0.0675,3095.74
+2,E: Full Integrated System (A+B+C),JPEG,1,0.9965,0.0675,3095.74
+2,A: QR Only,TAMPER,0,0.5833,0.0671,2907.49
+2,B: QR + Watermark,TAMPER,1,0.5833,0.0671,2907.49
+2,C: QR + Watermark + Comp A,TAMPER,1,0.5833,0.0671,2907.49
+2,D: QR + Watermark + A + B,TAMPER,1,0.5833,0.0671,2907.49
+2,E: Full Integrated System (A+B+C),TAMPER,1,0.5833,0.0671,2907.49
+3,A: QR Only,NONE,1,0.995,0.0671,2468.58
+3,B: QR + Watermark,NONE,1,0.995,0.0671,2468.58
+3,C: QR + Watermark + Comp A,NONE,1,0.995,0.0671,2468.58
+3,D: QR + Watermark + A + B,NONE,1,0.995,0.0671,2468.58
+3,E: Full Integrated System (A+B+C),NONE,1,0.995,0.0671,2468.58
+3,A: QR Only,PRINT_SCAN,0,0.7682,0.5413,2622.29
+3,B: QR + Watermark,PRINT_SCAN,0,0.7682,0.5413,2622.29
+3,C: QR + Watermark + Comp A,PRINT_SCAN,1,0.7682,0.5413,2622.29
+3,D: QR + Watermark + A + B,PRINT_SCAN,1,0.7682,0.5413,2622.29
+3,E: Full Integrated System (A+B+C),PRINT_SCAN,1,0.7682,0.5413,2622.29
+3,A: QR Only,JPEG,1,0.9964,0.0675,2931.74
+3,B: QR + Watermark,JPEG,1,0.9964,0.0675,2931.74
+3,C: QR + Watermark + Comp A,JPEG,1,0.9964,0.0675,2931.74
+3,D: QR + Watermark + A + B,JPEG,1,0.9964,0.0675,2931.74
+3,E: Full Integrated System (A+B+C),JPEG,1,0.9964,0.0675,2931.74
+3,A: QR Only,TAMPER,0,0.5783,0.0671,3014.93
+3,B: QR + Watermark,TAMPER,1,0.5783,0.0671,3014.93
+3,C: QR + Watermark + Comp A,TAMPER,1,0.5783,0.0671,3014.93
+3,D: QR + Watermark + A + B,TAMPER,1,0.5783,0.0671,3014.93
+3,E: Full Integrated System (A+B+C),TAMPER,1,0.5783,0.0671,3014.93
